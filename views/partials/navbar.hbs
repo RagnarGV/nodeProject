@@ -1,0 +1,31 @@
+{{!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
+ <a class="nav-item" href="/api/restaurant">Home</a>
+    <br>
+    {{#if user}}
+    <a class="nav-item" href="/users/logout">Logout</a>
+    {{else}}
+    <a class="nav-item" href="/users/login">Login</a>
+    <a class="nav-item" href="/users/register">Register</a>
+    {{/if}}
+ </nav>  --}}
+ <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/api/restaurant">Home</a>
+      </li>
+       {{#if user}}
+      <li class="nav-item">
+        <a class="nav-link" href="/users/logout">Logout</a>
+      </li>
+      {{else}}
+       <li class="nav-item">
+        <a class="nav-link" href="/users/login">Login</a>
+      </li>
+       <li class="nav-item">
+        <a class="nav-link" href="/users/register">Register</a>
+      </li>
+       {{/if}}
+    </ul>
+  </div>
+</nav> 

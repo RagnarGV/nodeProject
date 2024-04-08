@@ -1,0 +1,54 @@
+<h1>{{title}}</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th>
+        Name
+      </th>
+      <th>
+        Borough
+      </th>
+      <th>
+        Cuisine
+      </th>
+      <th>
+        Address
+      </th>
+      <th>
+        Grades
+      </th>
+     
+    </tr>
+  </thead>
+  <tbody>
+      {{!-- {{#if this.avg_reviews}} --}}
+      <tr>
+        <td>{{content.name}}</td>
+        <td>{{content.borough}}</td>
+        <td>{{content.cuisine}}</td>
+        
+        <td>Address : 
+            <br>
+            Street: {{content.address.building}}{{content.address.street}}
+            <br>
+             {{#each content.address.coord}}
+            Coordinates: {{this}}
+            <br>
+            {{/each}}
+            <br>
+            Zipcode: {{content.address.zipcode}}
+        </td>
+        <td>
+             {{#each content.grades}}
+             Grade: {{this.grade}}
+             <br>
+              Date: {{this.date}}
+              <br>
+               Score: {{this.score}}
+            <br>
+            {{/each}}
+        </td>
+      </tr>
+      {{!-- {{/if}} --}}
+  </tbody>
+</table>
