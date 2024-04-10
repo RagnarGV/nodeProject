@@ -3,6 +3,7 @@ const express = require("express");
 const path = require("path");
 const exphbs = require("express-handlebars");
 const passport = require("passport");
+var methodOverride = require('method-override')
 const session = require("express-session");
 var user_routes = require("./routes/users");
 var restaurant_routes = require("./routes/restaurants");
@@ -35,6 +36,7 @@ app.engine(
 app.set("view engine", "hbs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(methodOverride('_method'))
 app.use(express.static("public"));
 app.set("/", path.join(__dirname, "views"));
 
@@ -47,6 +49,7 @@ app.get("*", function(req, res, next){
 })
 app.use("/users", user_routes);
 app.use("/api", restaurant_routes);
+
 // Add Restaurant
 
 const PORT = process.env.PORT || 8000;

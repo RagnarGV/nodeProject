@@ -85,7 +85,7 @@ router
     if (errors.isEmpty()) {
       // Authenticate using passport and redirect
       passport.authenticate("local", {
-        successRedirect: "/api/restaurant",
+        successRedirect: "/api/restaurant?perPage=5&page=1",
         failureRedirect: "/users/login",
         failureMessage: true,
       })(req, res, next);
