@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 let Restaurants = require("../model/restaurant");
+
 module.exports = {
   // Local Strategy
   initialize : (connectionString) => {
@@ -14,8 +15,8 @@ module.exports = {
         console.log("DB Error");
       });
 },
-getAllRestaurants : (perPage,page) => {
- return Restaurants.find({}).sort('restaurant_id').limit(perPage)
+getAllRestaurants : (perPage,page,borough,searchString) => {
+ return Restaurants.find(borough ? {borough:borough} : {}, searchString ? {name:searchString} : {}).sort('restaurant_id').limit(perPage)
  .skip(perPage * page).lean() 
 },
 getRestaurantById : (id) => {
@@ -23,6 +24,11 @@ getRestaurantById : (id) => {
   return Restaurants.findById(id).lean()
  
  },
+ deleteRestaurantById : (id) => {
+  
+    return Restaurants.findByIdAndDelete(id)
+   
+   },
  addNewRestaurant: async (data) => {
   try {
       // Check if restaurant with the given ID already exists

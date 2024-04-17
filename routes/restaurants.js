@@ -1,13 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const restaurant = require("../module/restaurant");
-
+const { check, validationResult } = require("express-validator");
 router
 .route("/restaurant")
-.get(function (req, res) {
-    const perPage = req.query.perPage;
-    const page = req.query.page;
- restaurant.getAllRestaurants(perPage,page) 
+.get(async function (req, res) {
+    const perPage = req.query.perPage || 10;
+    const page = req.query.page || 1;
+    const borough = req.query.borough;
+    const searchString = req.query.searchString;
+        restaurant.getAllRestaurants(perPage,page,borough,searchString) 
       .then((restaurant) => {
           if (!restaurant || restaurant.length === 0) {
               res.send("No books found");
@@ -22,7 +24,9 @@ router
       .catch((err) => {
           console.error("Error occurred:", err);
           res.status(500).send("Internal Server Error");
-      });
+      }) 
+   
+
 })
 .post(function(req,res){
     let result = restaurant.addNewRestaurant(req.body)
@@ -43,9 +47,12 @@ router.get("/restaurant/add",ensureAuthenticated, (req, res) => {
   })
 
 router.route("/restaurant/:p_id")
-.get(function (req, res) {
+.get( async function (req, res) {
     const id = req.params.p_id;
-  
+    await check("id", "id is required").notEmpty().run(req);
+    const errors = validationResult(req);
+
+    if (errors.isEmpty()) {
     restaurant.getRestaurantById(id)
       .then((restaurant) => {
           if (!restaurant || restaurant.length === 0) {
@@ -62,6 +69,12 @@ router.route("/restaurant/:p_id")
           console.error("Error occurred:", err);
           res.status(500).send("Internal Server Error");
       });
+    }
+    else{
+        res.render("index", {
+            errors: errors.array(),
+          });
+    }
 })
 .put(function(req,res){
   //let result = restaurant.addNewRestaurant(req.body)
@@ -73,6 +86,34 @@ router.route("/restaurant/:p_id")
   //   // Route to home to view books if suceeeded
   //   res.redirect("/api/restaurant?perPage=5&page=1");
   // }
+})
+.delete( async function (req, res) {
+    const id = req.params.p_id;
+    console.log(id);
+    await check("p_id", "id is required").notEmpty().run(req);
+    const errors = validationResult(req);
+
+    if (errors.isEmpty()) {
+    restaurant.deleteRestaurantById(id)
+      .then((restaurant) => {
+          if (!restaurant || restaurant.length === 0) {
+              res.send("No books found");
+          } else {
+              // Pass books to index
+             console.log(restaurant);
+              res.redirect("/api/restaurant?perPage=5&page=1");
+          }
+      })
+      .catch((err) => {
+          console.error("Error occurred:", err);
+          res.status(500).send("Internal Server Error");
+      });
+    }
+    else{
+        res.render("index", {
+            errors: errors.array(),
+          });
+    }
 })
 
 router.route("/restaurant/update/:p_id")
