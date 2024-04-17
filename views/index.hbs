@@ -4,7 +4,7 @@
  <input type="text" name="perPage" id="perPage" placeholder="Show per page" >
   <input type="text" name="page" id="page" placeholder="Page Number" >
    <input type="text" name="borough" id="borough" placeholder="Enter Borough">
-          <button class="btn btn-primary" type="submit" >Show</button>
+          <button class="btn btn-outline-primary" type="submit" >Show</button>
           </form>
            {{!-- <form action="/api/restaurant" method="GET">
 
@@ -67,7 +67,9 @@
             {{/each}}
         </td>
         <td>
-         
+           <form action="/api/restaurant/{{this._id}}" method="GET">
+          <button class="btn btn-primary" type="submit" >View</button>
+          </form>
           <form action="/api/restaurant/{{this._id}}?_method=DELETE" method="POST">
           <button class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');" type="submit" >Delete</button>
           </form>

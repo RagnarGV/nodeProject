@@ -116,7 +116,7 @@ updateRestaurant: async (data) => {
   
         // Save the new restaurant to the database
         const result = await Restaurants.findByIdAndUpdate({_id:data._id}, insertData);
-        console.log(result);
+      
         // Return the newly created restaurant
         return { success: true, successForAdd: true, message: 'Restaurant added successfully', result };
     } catch (error) {

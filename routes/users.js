@@ -41,25 +41,30 @@ router
       // Assign attributes based on form data
       newUser.name = req.body.name;
       newUser.email = req.body.email;
-
-      bcrypt.genSalt(10, function (err, salt) {
-        bcrypt.hash(req.body.password, salt, async function (err, hashed_password) {
-          if (err) {
-            console.log(err);
-          } else {
-            newUser.password = hashed_password;
-            // Save new user to MongoDB
-            let result = await newUser.save()
-            if (!result) {
-              // Log error if failed
-              res.send("Could not save user")
+      User.find({"email" : req.body.email}).then((user) => {
+      if(!user){
+        bcrypt.genSalt(10, function (err, salt) {
+          bcrypt.hash(req.body.password, salt, async function (err, hashed_password) {
+            if (err) {
+              console.log(err);
             } else {
-              // Route to login if user created
-              res.redirect("/users/login");
+              newUser.password = hashed_password;
+              // Save new user to MongoDB
+              let result = await newUser.save()
+              if (!result) {
+                // Log error if failed
+                res.send("Could not save user")
+              } else {
+                // Route to login if user created
+                res.redirect("/users/login");
+              }
             }
-          }
-        });
-      });
+          });
+        })
+      }
+    }
+      )
+    
     } else {
       // Render form with errors
       res.render("register", {

@@ -49,10 +49,7 @@ router.get("/restaurant/add",ensureAuthenticated, (req, res) => {
 router.route("/restaurant/:p_id")
 .get( async function (req, res) {
     const id = req.params.p_id;
-    await check("id", "id is required").notEmpty().run(req);
-    const errors = validationResult(req);
-
-    if (errors.isEmpty()) {
+  
     restaurant.getRestaurantById(id)
       .then((restaurant) => {
           if (!restaurant || restaurant.length === 0) {
@@ -69,12 +66,7 @@ router.route("/restaurant/:p_id")
           console.error("Error occurred:", err);
           res.status(500).send("Internal Server Error");
       });
-    }
-    else{
-        res.render("index", {
-            errors: errors.array(),
-          });
-    }
+   
 })
 .put(async function(req,res){
 
