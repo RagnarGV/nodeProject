@@ -53,6 +53,9 @@ app.get("/", function(req, res){
 app.use("/users", user_routes);
 app.use("/api", restaurant_routes);
 
+app.use((req, res, next) => {
+  res.status(404).send("Page Not Found");
+});
 // Add Restaurant
 
 const PORT = process.env.PORT || 8000;
