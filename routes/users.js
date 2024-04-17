@@ -91,7 +91,7 @@ router
       })(req, res, next);
     } else {
       // If form errors then render login with errors
-      res.render("login", {
+      res.render("login", { 
         errors: errors.array(),
       });
     }

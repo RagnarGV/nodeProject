@@ -28,7 +28,7 @@ router
    
 
 })
-.post(function(req,res){
+.post(ensureAuthenticated, function(req,res){
     let result = restaurant.addNewRestaurant(req.body)
     console.log(result);
     if (!result) {
@@ -76,18 +76,19 @@ router.route("/restaurant/:p_id")
           });
     }
 })
-.put(function(req,res){
-  //let result = restaurant.addNewRestaurant(req.body)
-  res.send(req.body);
-  // if (!result) {
-  //   // Log error if failed
-  //   res.send("Could not save book")
-  // } else {
-  //   // Route to home to view books if suceeeded
-  //   res.redirect("/api/restaurant?perPage=5&page=1");
-  // }
+.put(async function(req,res){
+
+  let result = await restaurant.updateRestaurant(req.body)
+
+  if (!result) {
+    // Log error if failed
+    res.send("Could not save book")
+  } else {
+    // Route to home to view books if suceeeded
+    res.redirect("/api/restaurant?perPage=5&page=1");
+  }
 })
-.delete( async function (req, res) {
+.delete(ensureAuthenticated, async function (req, res) {
     const id = req.params.p_id;
     console.log(id);
     await check("p_id", "id is required").notEmpty().run(req);

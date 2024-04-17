@@ -39,7 +39,7 @@ getRestaurantById : (id) => {
       }
 
       // Format the input data to match the desired structure
-      console.log(data);
+     
       const insertData = {
           address: {
               building: data.building,
@@ -83,6 +83,48 @@ getRestaurantById : (id) => {
       throw { success: false, message: 'Error adding new restaurant' };
   }
 }
+,
+updateRestaurant: async (data) => {
+    try {
+        // Check if restaurant with the given ID already exists
+        const existingRestaurant = await Restaurants.findOne({ restaurant_id: data.restaurant_id });
+  
+        if (!existingRestaurant) {
+            return { success: false, successForAdd: false, message: 'Restaurant ID does not exists in the database' };
+        }
+  
+        // Format the input data to match the desired structure
+      
+        const insertData = {
+            address: {
+                building: data.building,
+                coord: [
+                        data.longitute,
+                        data.latitute
+                ],
+                street: data.street,
+                zipcode: data.zipcode,
+            },
+            borough: data.borough,
+            cuisine: data.cuisine,
+            grades: data.grade, 
+            name: data.name,
+            restaurant_id: data.restaurant_id,
+        };
+  
+       
+  
+        // Save the new restaurant to the database
+        const result = await Restaurants.findByIdAndUpdate({_id:data._id}, insertData);
+        console.log(result);
+        // Return the newly created restaurant
+        return { success: true, successForAdd: true, message: 'Restaurant added successfully', result };
+    } catch (error) {
+        // Log and throw an error if adding new restaurant fails
+        console.error(`Error adding new restaurant: ${error.message}`);
+        throw { success: false, message: 'Error adding new restaurant' };
+    }
+  }
 }
   
   

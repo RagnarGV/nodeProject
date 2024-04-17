@@ -3,6 +3,16 @@
   <form id="restaurantForm"  method="POST" action={{url}}>
     <div class="row g-3">
       <div class="col">
+          <input hidden
+          type="text"
+          class="form-control"
+          id="_id"
+          name="_id"
+          placeholder="Name"
+          aria-label="Name"
+          value={{content._id}}
+          
+        />
         <input
           type="text"
           class="form-control"
