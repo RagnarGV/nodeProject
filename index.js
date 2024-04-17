@@ -47,6 +47,9 @@ app.get("*", function(req, res, next){
     res.locals.user = req.user || null;
     next();
 })
+app.get("/", function(req, res){
+  res.render("dashboard");
+})
 app.use("/users", user_routes);
 app.use("/api", restaurant_routes);
 
